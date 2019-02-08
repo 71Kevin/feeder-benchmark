@@ -1,0 +1,4 @@
+{
+    mailingId: 1,
+    quantity: 30
+}
