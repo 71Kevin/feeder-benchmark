@@ -2,42 +2,27 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 const mongo = require('./mongoose/connect');
-const Contact = require('./mongoose/models/contact.js');
+const contactUtil = require('./util/contact-util');
 
 app.use(bodyParser.json()); 
 
-// (async function(){
-
-//   await mongo.connect();
-//   app.post("/test", function(request, response, next) {    
-//     const contact = new Contact({
-//         contact: request.body.contactId,
-//         mailingId: request.body.mailingId,
-
-//     });
-
-//     contact.save(function(err, u) {
-//         if (err) return next(err);
-//         return request.json(u);
-
-//     });
-//   });
-// })();
-
-
 (async function(){
   await mongo.connect();
-  app.post('/insertContacts', function (req, res) {
-    const contact = new Contact({
-      quantity: req.body.quantity
-    });
-    console.log(req.body);
-    res.send('ok');
+  app.post('/insertContacts', async function (req, res) {
+    await contactUtil.insertContacts(req, res);
+
+    // const contact = new Contact({
+    //   quantity: req.body.quantity,
+    //   mailingId: req.body.mailingId
+    // });
+    // console.log(req.body);
+    // res.send('ok');
     
-    contact.save(function(err, u) {
-      if (err) return next(err);
-      return res.json(u);
-    });
+    // contact.save(function(err, u) {
+    //   if (err) return next(err);
+    //   return res.json(u);
+    // });
+    
   });
   
   app.listen(process.env.PORT, '0.0.0.0');
